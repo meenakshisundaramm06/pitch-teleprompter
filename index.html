@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#020A51" />
+    <title>Teleprompter</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main id="editor-view" class="editor-view">
+      <header class="app-header">
+        <div class="brand"><span class="brand-mark" aria-hidden="true"></span>Teleprompter</div>
+      </header>
+
+      <div class="editor-layout">
+        <section class="script-panel" aria-labelledby="script-heading">
+          <div class="section-heading">
+            <div>
+              <h1 id="script-heading">Your script</h1>
+              <p>Paste your formatted script. Line breaks and blank lines stay in place.</p>
+            </div>
+          </div>
+          <label class="sr-only" for="script-input">Script</label>
+          <textarea id="script-input" name="script" autocomplete="off" placeholder="Paste or write your script here…"></textarea>
+          <p class="editor-footnote">Use **bold** or *italic* for emphasis. The symbols won’t appear while reading.</p>
+        </section>
+
+        <aside class="setup-panel" aria-labelledby="setup-heading">
+          <h2 id="setup-heading">Reading settings</h2>
+
+          <div class="setting">
+            <div class="setting-heading"><label for="editor-speed">Scroll speed</label><output id="editor-speed-value" for="editor-speed">25 px/s</output></div>
+            <p id="duration-estimate" class="duration-estimate">Add a script to estimate scroll time.</p>
+            <input id="editor-speed" type="range" min="10" max="110" step="5" value="25" />
+            <div class="range-ends"><span>Slower</span><span>Faster</span></div>
+          </div>
+
+          <div class="setting">
+            <div class="setting-heading"><label for="editor-size">Text size</label><output id="editor-size-value" for="editor-size">44 px</output></div>
+            <input id="editor-size" type="range" min="34" max="72" step="2" value="44" />
+            <div class="range-ends"><span>Smaller</span><span>Larger</span></div>
+          </div>
+
+          <div class="setting">
+            <div class="setting-heading"><label for="editor-width">Line width</label><output id="editor-width-value" for="editor-width">580 px</output></div>
+            <input id="editor-width" type="range" min="420" max="820" step="20" value="580" />
+            <div class="range-ends"><span>Narrower</span><span>Wider</span></div>
+          </div>
+
+          <div class="setting">
+            <label class="toggle-row" for="editor-dimming"><input id="editor-dimming" class="switch" type="checkbox" role="switch" checked aria-describedby="dimming-note" />Dim lines outside the reading line</label>
+            <p id="dimming-note" class="setting-note">Keeps three lines bright. Turn off to show all text at full brightness.</p>
+          </div>
+
+          <button id="open-reader" class="primary-button" type="button">Open reading view <span aria-hidden="true">→</span></button>
+          <p id="open-hint" class="open-hint">Add a script to begin.</p>
+        </aside>
+      </div>
+      <div id="script-measure" class="script-display script-measure" aria-hidden="true"></div>
+    </main>
+
+    <main id="reading-view" class="reading-view" hidden>
+      <div class="reading-topbar">
+        <time id="elapsed-time" class="elapsed-time" aria-label="Elapsed reading time" aria-live="off">00:00</time>
+        <span id="playback-status" class="sr-only" role="status">Ready</span>
+      </div>
+
+      <div class="focus-cue" aria-hidden="true"><span></span><span></span></div>
+      <div id="reader" class="reader" tabindex="0" aria-label="Script">
+        <div id="script-display" class="script-display"></div>
+      </div>
+
+      <div class="reader-bottom">
+        <p class="keyboard-help">Press Space to play or pause · Up and Down arrows change speed</p>
+        <div id="control-bar" class="control-bar">
+          <button id="edit-button" class="text-button" type="button">Edit script</button>
+          <button id="restart-button" class="text-button" type="button">Restart</button>
+          <button id="play-button" class="play-button" type="button"><span id="play-symbol" aria-hidden="true">▶</span><span id="play-label">Play</span></button>
+          <div class="control-setting speed-setting">
+            <label for="reader-speed">Speed</label>
+            <input id="reader-speed" type="range" min="10" max="110" step="5" value="25" />
+            <output id="reader-speed-value" for="reader-speed">25</output>
+          </div>
+          <div class="control-setting size-setting" aria-label="Text size">
+            <span>Size</span>
+            <button id="size-down" type="button" aria-label="Decrease text size">−</button>
+            <button id="size-up" type="button" aria-label="Increase text size">+</button>
+          </div>
+          <div class="control-setting width-setting">
+            <label for="reader-width">Width</label>
+            <input id="reader-width" type="range" min="420" max="820" step="20" value="580" />
+            <output id="reader-width-value" for="reader-width">580</output>
+          </div>
+          <div class="control-setting">
+            <label for="reader-dimming">Dim lines</label>
+            <input id="reader-dimming" class="switch" type="checkbox" role="switch" checked />
+          </div>
+          <button id="fullscreen-button" class="text-button fullscreen-button" type="button">Full screen</button>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,221 @@
+@font-face {
+  font-family: "Funnel Sans";
+  src: url("fonts/FunnelSans-Latin.woff2") format("woff2"), url("fonts/FunnelSans-variable.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Funnel Sans";
+  src: url("fonts/FunnelSans-LatinExt.woff2") format("woff2"), url("fonts/FunnelSans-variable.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Funnel Sans";
+  src: url("fonts/FunnelSans-Italic-Latin.woff2") format("woff2"), url("fonts/FunnelSans-Italic-variable.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 300 800;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Funnel Sans";
+  src: url("fonts/FunnelSans-Italic-LatinExt.woff2") format("woff2"), url("fonts/FunnelSans-Italic-variable.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 300 800;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+:root {
+  color-scheme: dark;
+  --background: #090a16;
+  --editor-wash: #020a51;
+  --reader-background: #090a16;
+  --editor-field: #11223c;
+  --surface: #11223c;
+  --surface-raised: #1a3257;
+  --control-surface: #101b30;
+  --control-border: #394760;
+  --text: #ffffff;
+  --reading-text: #e5edf6;
+  --muted: #b3c3da;
+  --quiet: #a1a8b4;
+  --action: #5756f6;
+  --action-hover: #6261f7;
+  --focus-ring: #2ae3ff;
+  --brand-blue: #2322f0;
+  --border: #4f5c75;
+  --button-text: #ffffff;
+  --reading-cue: #b3c3da;
+  --reading-size: 44px;
+  --reading-width: 580px;
+  /* The size the text really renders at; small screens shrink it below. */
+  --reading-font-size: var(--reading-size);
+  --reading-line-height: 1.42;
+  --focus-top: clamp(96px, 12dvh, 124px);
+  /* Bright reading band: 3 lines starting at the reading line. */
+  --focus-lines: 3;
+  --focus-band: calc(var(--reading-font-size) * var(--reading-line-height) * var(--focus-lines));
+  --focus-fade: calc(var(--reading-font-size) * .6);
+  /* How much of the text shows outside the band (1 = full brightness).
+     Spoken text can fade further; upcoming text stays readable for look-ahead. */
+  --dim-before: .2;
+  --dim-after: .55;
+  /* 1 = dimming on, 0 = off. app.js sets this from the reading settings. */
+  --focus-dimming: 1;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  font-family: "Funnel Sans", "Noto Sans", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body { background: linear-gradient(180deg, var(--editor-wash) 0px, var(--background) 530px) var(--background); color: var(--text); }
+@supports (background: linear-gradient(180deg in oklab, red, blue)) {
+  body { background: linear-gradient(180deg in oklab, var(--editor-wash) 0px, var(--background) 530px) var(--background); }
+}
+button, textarea, input { font: inherit; }
+button { cursor: pointer; }
+button:focus-visible, textarea:focus-visible, input:focus-visible, .reader:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+[hidden] { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+.editor-view { min-height: 100dvh; max-width: 1500px; margin: auto; padding: 0 clamp(20px, 4vw, 64px) 48px; }
+.app-header { display: flex; align-items: center; justify-content: space-between; height: 86px; border-bottom: 1px solid var(--border); }
+.brand { display: flex; align-items: center; gap: 11px; color: var(--text); font-size: 17px; font-weight: 600; letter-spacing: -.02em; }
+.brand-mark { display: block; width: 14px; height: 14px; border-radius: 2px; background: var(--action); }
+.editor-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: clamp(32px, 5vw, 76px); padding-top: clamp(38px, 5vw, 76px); }
+.section-heading { display: flex; justify-content: space-between; gap: 20px; align-items: start; }
+h1, h2, p { margin-top: 0; }
+h1 { margin-bottom: 8px; font-size: clamp(32px, 3.3vw, 40px); font-weight: 500; line-height: 1.1; letter-spacing: -.025em; }
+h1, h2 { text-wrap: balance; }
+.section-heading p { color: var(--muted); font-size: 16px; line-height: 1.5; text-wrap: pretty; }
+#script-input { display: block; width: 100%; min-height: min(57vh, 620px); padding: 27px 30px; resize: vertical; border: 1px solid var(--border); border-radius: 5px; background: var(--editor-field); color: var(--reading-text); font-size: 20px; line-height: 1.55; outline: none; overflow-wrap: break-word; }
+#script-input::placeholder { color: var(--quiet); }
+#script-input:focus { border-color: var(--focus-ring); }
+.editor-footnote { margin: 14px 0 0; color: var(--quiet); font-size: 13px; }
+.setup-panel { padding-top: 8px; }
+h2 { margin-bottom: 10px; font-size: 24px; font-weight: 600; line-height: 1.25; letter-spacing: -.025em; }
+.setup-panel h2 { margin-bottom: 32px; }
+.setting { margin-bottom: 34px; }
+.setting-heading, .range-ends { display: flex; align-items: center; justify-content: space-between; }
+.setting-heading { margin-bottom: 8px; font-size: 15px; font-weight: 600; }
+.setting-heading output { color: var(--muted); font-size: 14px; font-weight: 400; font-variant-numeric: tabular-nums; }
+.duration-estimate { margin: 2px 0 4px; color: var(--muted); font-size: 14px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+input[type="range"] { display: block; width: 100%; height: 44px; margin: 0; accent-color: var(--action); cursor: pointer; }
+.range-ends { margin-top: 2px; color: var(--quiet); font-size: 12px; }
+.toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; font-size: 15px; font-weight: 600; cursor: pointer; }
+.toggle-row .switch { order: 1; }
+/* A checkbox drawn as an on/off switch. role="switch" tells screen readers it's on/off. */
+.switch { appearance: none; position: relative; flex: none; width: 40px; height: 24px; margin: 0; border: 1px solid var(--control-border); border-radius: 999px; background: var(--surface-raised); cursor: pointer; transition: background-color 160ms var(--ease-out), border-color 160ms var(--ease-out); }
+.switch::before { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--muted); transition: transform 160ms var(--ease-out), background-color 160ms var(--ease-out); }
+.switch:checked { border-color: var(--action); background: var(--action); }
+.switch:checked::before { background: var(--button-text); transform: translateX(16px); }
+.setting-note { margin: 2px 0 0; color: var(--muted); font-size: 14px; line-height: 1.4; text-wrap: pretty; }
+.primary-button { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 57px; margin-top: 45px; padding: 0 20px; border: 0; border-radius: 5px; background: var(--action); color: var(--button-text); font-size: 16px; font-weight: 600; }
+.primary-button:active:not(:disabled) { background: var(--action-hover); }
+.primary-button:disabled { cursor: not-allowed; border: 1px solid var(--border); background: var(--surface-raised); color: var(--muted); }
+.open-hint { min-height: 22px; margin: 12px 0 0; color: var(--quiet); font-size: 13px; }
+
+.reading-view { position: fixed; inset: 0; overflow: hidden; background: var(--reader-background); }
+.reading-topbar { position: absolute; z-index: 2; inset: 0 0 auto; height: 74px; background: linear-gradient(var(--reader-background) 42%, rgba(9,10,22,0)); pointer-events: none; }
+.elapsed-time { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--muted); font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; letter-spacing: .06em; opacity: .85; }
+.reader { height: 100dvh; padding: var(--focus-top) 26px 74dvh; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; overscroll-behavior: contain; }
+/* The mask stays fixed to the reader box while the text scrolls under it,
+   so the lines passing the reading line are bright and the rest are dim. */
+.reader {
+  /* When --focus-dimming is 0 both values become 1, so nothing is dimmed. */
+  --alpha-before: calc(1 - var(--focus-dimming) * (1 - var(--dim-before)));
+  --alpha-after: calc(1 - var(--focus-dimming) * (1 - var(--dim-after)));
+  --focus-mask: linear-gradient(
+    to bottom,
+    rgb(0 0 0 / var(--alpha-before)) 0,
+    rgb(0 0 0 / var(--alpha-before)) calc(var(--focus-top) - var(--focus-fade)),
+    #000 var(--focus-top),
+    #000 calc(var(--focus-top) + var(--focus-band)),
+    rgb(0 0 0 / var(--alpha-after)) calc(var(--focus-top) + var(--focus-band) + var(--focus-fade)),
+    rgb(0 0 0 / var(--alpha-after)) 100%
+  );
+  -webkit-mask-image: var(--focus-mask);
+  mask-image: var(--focus-mask);
+}
+.reader::-webkit-scrollbar { display: none; }
+.script-display { width: min(100%, var(--reading-width)); margin: 0 auto; color: var(--reading-text); font-size: var(--reading-font-size); font-weight: 500; line-height: var(--reading-line-height); letter-spacing: -.018em; white-space: pre-wrap; overflow-wrap: break-word; text-align: left; }
+.script-display strong { font-weight: 700; }
+.script-measure { position: fixed; left: 0; top: 0; width: min(calc(100vw - 52px), var(--reading-width)); max-width: none; margin: 0; visibility: hidden; pointer-events: none; }
+.script-display::selection { background: var(--brand-blue); color: var(--text); }
+.focus-cue { position: absolute; z-index: 1; top: var(--focus-top); left: 50%; width: min(calc(100% - 26px), calc(var(--reading-width) + 70px)); height: calc(var(--reading-line-height) * 1em); transform: translateX(-50%); font-size: var(--reading-font-size); pointer-events: none; }
+.focus-cue span { position: absolute; top: .52em; width: 17px; height: 2px; background: var(--reading-cue); opacity: .55; }
+.focus-cue span:first-child { left: 0; }
+.focus-cue span:last-child { right: 0; }
+.reader-bottom { position: absolute; z-index: 3; right: 0; bottom: 0; left: 0; padding: 32px 22px max(18px, env(safe-area-inset-bottom)); background: linear-gradient(transparent, rgba(9,10,22,.88) 42%, var(--reader-background) 92%); }
+.keyboard-help { margin: 0 0 12px; color: var(--muted); font-size: 14px; font-weight: 500; line-height: 1.4; text-align: center; }
+.control-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; width: fit-content; max-width: 100%; min-height: 64px; margin: 0 auto; padding: 8px 10px; border: 1px solid var(--control-border); border-radius: 13px; background: var(--control-surface); box-shadow: 0 6px 24px rgba(0,0,0,.18); }
+.text-button, .size-setting button { min-height: 44px; padding: 0 13px; border: 0; border-radius: 5px; background: transparent; color: var(--muted); font-size: 14px; white-space: nowrap; }
+.text-button:active, .size-setting button:active { background: var(--surface-raised); }
+.play-button { display: flex; align-items: center; justify-content: center; gap: 10px; min-width: 111px; min-height: 48px; padding: 0 18px; border: 0; border-radius: 5px; background: var(--action); color: var(--button-text); font-size: 15px; font-weight: 600; }
+.play-button:active { background: var(--action-hover); }
+@media (hover: hover) {
+  .primary-button:hover:not(:disabled), .play-button:hover { background: var(--action-hover); }
+  .text-button:hover, .size-setting button:hover { background: var(--surface-raised); color: var(--text); }
+}
+@media (hover: hover) and (pointer: fine) {
+  .primary-button, .play-button { transition: transform 160ms var(--ease-out); }
+  .primary-button:active:not(:disabled):not(:focus-visible), .play-button:active:not(:focus-visible) { transform: scale(.97); transition-duration: 0ms; }
+}
+#play-symbol { font-size: 13px; }
+.control-setting { display: flex; align-items: center; gap: 11px; min-height: 40px; padding-left: 15px; border-left: 1px solid var(--border); color: var(--muted); font-size: 13px; white-space: nowrap; }
+.speed-setting input, .width-setting input { width: 94px; }
+.speed-setting output, .width-setting output { min-width: 23px; color: var(--text); font-variant-numeric: tabular-nums; }
+.width-setting output { min-width: 30px; }
+.size-setting { gap: 1px; }
+.size-setting span { margin-right: 5px; }
+.size-setting button { min-width: 44px; padding: 0 6px; font-size: 20px; }
+
+@media (max-width: 850px) {
+  .editor-layout { grid-template-columns: 1fr; gap: 34px; }
+  .setup-panel { max-width: 560px; }
+  .control-bar { width: 100%; }
+  .reader-bottom { padding-inline: 12px; }
+}
+@media (max-width: 560px) {
+  .app-header { height: 68px; }
+  .keyboard-help, .fullscreen-button { display: none; }
+  .editor-layout { padding-top: 32px; }
+  .section-heading { display: block; }
+  #script-input { min-height: 47vh; padding: 18px; font-size: 17px; }
+  .reader { padding-inline: 22px; }
+  /* Set on :root so --focus-band (derived there) shrinks with the text. */
+  :root { --reading-font-size: min(var(--reading-size), 11vw); }
+  .script-measure { width: min(calc(100vw - 44px), var(--reading-width)); }
+  .focus-cue { display: none; }
+  .control-bar { gap: 3px; padding: 8px; }
+  .control-setting { padding-left: 7px; }
+  .speed-setting input { width: 67px; }
+  /* The screen is narrower than the smallest line width, so the slider would do nothing. */
+  .width-setting { display: none; }
+}
+@media (max-height: 600px) {
+  .reader-bottom { padding-top: 14px; }
+  .keyboard-help { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .primary-button, .play-button, .switch, .switch::before { transition: none; }
+  .primary-button:active:not(:disabled), .play-button:active { transform: none; }
+}
+/* People who ask the system for more contrast get every line at full brightness. */
+@media (prefers-contrast: more) {
+  .reader { -webkit-mask-image: none; mask-image: none; }
+}
