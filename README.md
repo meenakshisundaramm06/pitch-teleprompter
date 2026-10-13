@@ -1,29 +1,71 @@
 # Teleprompter
 
-A small teleprompter that runs in a browser. It needs no account, install, or internet connection.
+A teleprompter that runs in your browser. Paste a script, press Space, and read as the text scrolls. No account, no install, and nothing leaves your computer.
 
-Funnel Sans is bundled for offline use under the [SIL Open Font License](fonts/OFL.txt).
+**[Open it now →](https://meenakshisundaramm06.github.io/pitch-teleprompter/)**
+
+Use it for a pitch, a talk, a video or a recorded demo.
 
 ## Use it
 
-1. Open `index.html` in your browser.
-2. Paste a formatted script. The reading view keeps your line breaks and blank lines. Use `**bold**` or `*italic*` for visual emphasis; the reading view hides those marks. A backslash at the end of a line is also hidden, while the line break stays.
-3. Adjust the scroll speed, text size, and line width if needed. The starting values are 25 px/s, 44 px, and 580 px. The time shown near speed estimates how long the text will take to scroll; your speaking time may differ.
-4. Open the reading view and press **Space** when you are ready to speak.
-5. Press **Space** to pause or resume, **↑ / ↓** to change speed by 5 px/s, or **R** to restart. You can also use the controls at the bottom, which let you change speed, text size, line width, and dimming while you read. The **Full screen** button hides browser tabs and the address bar.
+1. Open the link above.
+2. Paste your script.
+3. Set the speed, text size and line width, or keep the defaults (25 px/s, 44 px, 580 px).
+4. Click **Open reading view**.
+5. Press **Space** when you are ready to speak.
 
-The browser **Back** button returns from reading to editing. **Forward** reopens the reading view.
+### Controls
 
-The small timer above the reading line counts up while Play is active, including when the script fits on screen or has reached the bottom. Pausing stops it; Restart resets it to 00:00.
+| Key | Action |
+| --- | --- |
+| `Space` | Play or pause |
+| `↑` `↓` | Change speed by 5 px/s |
+| `R` | Restart from the top |
 
-The three lines at the reading line stay bright. Text you have already read fades the most; text coming up stays half bright, so you can read ahead. To show all text at full brightness, turn off **Dim lines** in the settings or in the reading view controls. The app also turns dimming off when your system asks for more contrast.
+The buttons at the bottom of the reading view change speed, text size, line width and dimming while you read. **Full screen** hides the browser's tabs and address bar. **Edit script** (or the browser's Back button) returns you to the editor.
 
-The script and settings stay on this page only. Refreshing or leaving the page starts with a blank script and the default settings. Keep your own copy of the script.
+### Format your script
 
-## Recording with OBS (optional)
+- Put each line where you want a pause or a breath. The reading view keeps your line breaks and blank lines.
+- Wrap words in `**double stars**` for bold or `*single stars*` for italic. The reading view shows the style and hides the marks.
+- End a line with a backslash (`\`) to keep a line break without showing the backslash.
 
-If you record only your camera, add your camera as a **Video Capture Device** source in OBS. If you also record your screen on a recent Mac, use **macOS Screen Capture** and select the app or window you want to show. Capturing the whole display will include the teleprompter. See the [OBS sources guide](https://obsproject.com/kb/sources-guide) for other systems and macOS versions.
+### Read ahead
 
-## Check the code
+The three lines at the reading line stay bright. Lines you have read fade the most, and lines to come stay half bright, so you can see what is next. Turn off **Dim lines** to show all text at full brightness. The page also turns dimming off if your system asks for more contrast.
 
-Run `node --test app.test.js` from this folder. The app itself needs no Node install to run.
+### Know the time
+
+A small timer above the reading line counts up while the script plays. Pause stops it and Restart resets it to 00:00. The time shown near the speed setting is an estimate of how long the text takes to scroll. Your speaking time may differ.
+
+## Things to know
+
+- **It does not save your script.** Refresh or leave the page and you start with a blank script and the default settings. Keep your own copy.
+- **It works offline.** Download the files, then open `index.html`. The font is bundled, so nothing loads from the internet.
+- **It makes no network requests.** The page has no analytics and no tracking.
+
+## Record with it (optional)
+
+To record only your camera, add the camera as a **Video Capture Device** in [OBS](https://obsproject.com). If you also record your screen on a recent Mac, use **macOS Screen Capture** and pick the window you want to show. Capturing the whole display would include the teleprompter. See the [OBS sources guide](https://obsproject.com/kb/sources-guide) for other systems.
+
+## Run or change it yourself
+
+There is no build step. The whole app is three files: `index.html`, `app.js` and `styles.css`, plus the font in `fonts/`.
+
+```bash
+git clone https://github.com/meenakshisundaramm06/pitch-teleprompter.git
+cd pitch-teleprompter
+open index.html          # on macOS; or double-click the file
+```
+
+Run the tests with a recent version of Node (they use Node's built-in test runner):
+
+```bash
+node --test app.test.js
+```
+
+Every push to `main` runs the tests and then publishes the site to GitHub Pages.
+
+## License
+
+The code is [MIT](LICENSE). The font, Funnel Sans, is bundled under the [SIL Open Font License](fonts/OFL.txt).
